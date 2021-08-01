@@ -2,16 +2,18 @@
 
 import 'package:flutter/material.dart';
 
-import 'components/Body.dart';
+import 'home/Body.dart';
 
 class Home_screens  extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: buidAppBar(),
 
-      body: s_Body(),
+
+      body: stful_Body(),
 
 
     );
