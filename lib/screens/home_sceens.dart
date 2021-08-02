@@ -1,27 +1,18 @@
-
-
 import 'package:flutter/material.dart';
 
 import 'home/Body.dart';
 
-class Home_screens  extends StatelessWidget {
-
+class Home_screens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      appBar: buidAppBar(),
-
+      // App Bar
+      appBar: AppBar(
+        elevation: 0,
+      ),
 
       body: stful_Body(),
 
-
-    );
-  }
-
-  AppBar buidAppBar() {
-    return AppBar(
-        elevation: 0,
     );
   }
 }

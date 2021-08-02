@@ -1,9 +1,6 @@
 import 'package:covid19_app/constants.dart';
 import 'package:covid19_app/screens/home_sceens.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-
 
 void main() {
   runApp(MyApp());
@@ -13,16 +10,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
-    return
-
-      MaterialApp(
-
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
 
       title: "Covid-19 Demo",
 
-      // set Theme
+      // set Theme app
       theme: ThemeData(
         scaffoldBackgroundColor: kBackgroundColor,
         primaryColor: kPrimaryColor,
@@ -31,14 +24,8 @@ class MyApp extends StatelessWidget {
         canvasColor: Colors.transparent,
       ),
 
-
       // theme: ThemeData.dark(),
-
       home: Home_screens(),
-
-
     );
   }
-
-
 }

@@ -5,8 +5,10 @@ import 'package:covid19_app/service/service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 import 'components/LineChartWidget.dart';
+import 'components/LineTitles.dart';
 
 class stful_Body extends StatefulWidget {
   @override
@@ -15,37 +17,54 @@ class stful_Body extends StatefulWidget {
 
 class _stful_BodyState extends State<stful_Body> {
 
+  // constant variable
   Model model = new Model();
-
   bool isLoading = false;
+  List timeline = [];
 
+  // initState
   @override
   void initState() {
     callService();
+    update();
+  }
+
+  //  callSerivc
+  Future<void> update() async {
+    var response = await Service().showTimeLine();
+    setState(() {
+      timeline = response["Data"].reversed.toList().sublist(0, 10);
+    });
+    LineTitles(timeline);
   }
 
   Future<void> callService() async {
     var response = await Service().showCovid();
-    print("response: $response");
-    setState(() {
 
+    var f = NumberFormat('###,###');
+    // print("response: $response");
+    setState(() {
       isLoading = true;
 
-      model.todayCase = response["todayCases"].toString();
-      model.totalCases = response["todayCases"].toString();
+      model.todayCase = f.format(response["todayCases"]).toString();
 
-      model.todayDeaths = response["deaths"].toString();
-      model.totalDeaths  = response["todayDeaths"].toString();
+      model.totalCases = f.format(response["cases"]).toString();
 
-      model.todayRecovered = response["todayRecovered"].toString();
-      model.totalRecovered = response["recovered"].toString();
+      model.todayDeaths = f.format(response["deaths"]).toString();
+      model.totalDeaths = f.format(response["todayDeaths"]).toString();
 
+      model.todayRecovered = f.format(response["todayRecovered"]).toString();
+      model.totalRecovered = f.format(response["recovered"]).toString();
     });
   }
 
+  // body state ment
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    DateTime now = new DateTime.now();
+    String formatter = DateFormat('dd / MM / yyyy').format(now);
 
     return Column(
       children: <Widget>[
@@ -90,7 +109,11 @@ class _stful_BodyState extends State<stful_Body> {
                         color: Colors.white),
 
                     // set state showing date
-                    child: Text("Hello Test!"),
+                    child: Text("Update : $formatter",
+                        style: TextStyle(
+                            fontFamily: "Khanit",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18)),
                   )),
             ],
           ),
@@ -108,7 +131,7 @@ class _stful_BodyState extends State<stful_Body> {
                           title: "Covid Case",
                           color: Colors.red.shade300,
                           today: model.todayCase,
-                          total: model.totalCases ),
+                          total: model.totalCases),
                       setContainer(
                           size: size,
                           title: "Death Case",
@@ -202,21 +225,36 @@ class _stful_BodyState extends State<stful_Body> {
               topLeft: Radius.circular(36),
               topRight: Radius.circular(36),
             )),
-        height: 1000,
         padding: EdgeInsets.only(
           top: 40,
         ),
+        child: Column(
+          children: [
+            Text(" NewConfirmed graph ",
+                style: TextStyle(
+                    letterSpacing: 2,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    fontFamily: "Khanit")),
 
-    child: Column(
-      children: [
-        Text("data"),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          height: 300,
-          color: Colors.white,
-          child: LineChartWidget(),
-        )
-      ],
-    ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 28, horizontal: 10),
+              height: 300,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  // color: Colors.white24
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        blurRadius: 5,
+                        spreadRadius: 2)
+                  ]),
+              child: LineChartWidget(timeline: timeline),
+            )
+          ],
+        ),
       );
+
 }

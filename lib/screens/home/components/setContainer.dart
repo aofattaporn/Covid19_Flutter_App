@@ -54,7 +54,8 @@ class setContainer extends StatelessWidget {
                 BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
                     blurRadius: 5,
-                    spreadRadius: 2)
+                    spreadRadius: 2
+                )
               ]),
 
           margin: EdgeInsets.only(top: 30, left: 12),
