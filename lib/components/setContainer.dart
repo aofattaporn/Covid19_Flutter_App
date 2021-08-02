@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
+import '../constants.dart';
 
 class setContainer extends StatelessWidget {
   const setContainer({
@@ -75,7 +75,7 @@ class setContainer extends StatelessWidget {
               ),
               // hard code
               Text(
-                "บอดรวม ${total}",
+                "total :  ${total}",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,

@@ -1,14 +1,16 @@
 import 'package:covid19_app/constants.dart';
 import 'package:covid19_app/model/model.dart';
-import 'package:covid19_app/screens/home/components/setContainer.dart';
+import 'package:covid19_app/components/setContainer.dart';
 import 'package:covid19_app/service/service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
-import 'components/LineChartWidget.dart';
-import 'components/LineTitles.dart';
+import 'TapeSheet/LineChartWidget.dart';
+import 'MenageBody/build_bottomMain.dart';
+import 'MenageBody/build_waitLoading.dart';
+import 'TapeSheet/LineTitles.dart';
 
 class stful_Body extends StatefulWidget {
   @override
@@ -25,12 +27,12 @@ class _stful_BodyState extends State<stful_Body> {
   // initState
   @override
   void initState() {
-    callService();
-    update();
+    callServiceUpdate();
+    callServicTimeline();
   }
 
   //  callSerivc
-  Future<void> update() async {
+  Future<void> callServicTimeline() async {
     var response = await Service().showTimeLine();
     setState(() {
       timeline = response["Data"].reversed.toList().sublist(0, 10);
@@ -38,7 +40,7 @@ class _stful_BodyState extends State<stful_Body> {
     LineTitles(timeline);
   }
 
-  Future<void> callService() async {
+  Future<void> callServiceUpdate() async {
     var response = await Service().showCovid();
 
     var f = NumberFormat('###,###');
@@ -50,8 +52,8 @@ class _stful_BodyState extends State<stful_Body> {
 
       model.totalCases = f.format(response["cases"]).toString();
 
-      model.todayDeaths = f.format(response["deaths"]).toString();
-      model.totalDeaths = f.format(response["todayDeaths"]).toString();
+      model.todayDeaths = f.format(response["todayDeaths"]).toString();
+      model.totalDeaths = f.format(response["deaths"]).toString();
 
       model.todayRecovered = f.format(response["todayRecovered"]).toString();
       model.totalRecovered = f.format(response["recovered"]).toString();
@@ -69,55 +71,7 @@ class _stful_BodyState extends State<stful_Body> {
     return Column(
       children: <Widget>[
         // header container
-        Container(
-          // set Container
-          height: size.height * 0.22,
-
-          decoration: BoxDecoration(
-              color: kPrimaryColor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(36),
-                bottomRight: Radius.circular(36),
-              )),
-
-          // Stack show date
-          child: Stack(
-            children: [
-              // set Covid-19
-              Center(
-                heightFactor: 1.2,
-                child: Text("COVID-19",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 50,
-                        fontFamily: "Khanit",
-                        fontWeight: FontWeight.bold)),
-              ),
-
-              // set Container center for show date
-              Positioned(
-                  bottom: 20,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: KDefaultPadding),
-                    padding: EdgeInsets.symmetric(horizontal: KDefaultPadding),
-                    height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(36),
-                        color: Colors.white),
-
-                    // set state showing date
-                    child: Text("Update : $formatter",
-                        style: TextStyle(
-                            fontFamily: "Khanit",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18)),
-                  )),
-            ],
-          ),
-        ),
+        build_bottomMain(size: size, formatter: formatter),
 
         // center content
         Column(
@@ -134,13 +88,13 @@ class _stful_BodyState extends State<stful_Body> {
                           total: model.totalCases),
                       setContainer(
                           size: size,
-                          title: "Death Case",
+                          title: "Deaths",
                           color: Colors.black54,
                           today: model.todayDeaths,
                           total: model.totalDeaths),
                       setContainer(
                           size: size,
-                          title: "Recovered",
+                          title: "Recovers",
                           color: Colors.green.shade300,
                           today: model.todayRecovered,
                           total: model.totalRecovered),
@@ -149,18 +103,7 @@ class _stful_BodyState extends State<stful_Body> {
 
                 // Loading
                 : Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        height: size.height * 0.499,
-                        color: Colors.white,
-                        child: Text("LOADING...",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Khanit",
-                                fontSize: 20)),
-                      )
-                    ],
+                    children: [buid_waitLoading(size: size)],
                     mainAxisAlignment: MainAxisAlignment.end,
                   )
           ],
@@ -168,7 +111,7 @@ class _stful_BodyState extends State<stful_Body> {
 
         // bottom sheet
         Expanded(
-          child: Center(
+          child:  Center(
             child: Container(
               decoration: BoxDecoration(
                   color: kPrimaryColor,
@@ -199,7 +142,7 @@ class _stful_BodyState extends State<stful_Body> {
                         height: 20,
                       ),
                       Text(
-                        "Tap to watch graft",
+                        "Tap to watch graph",
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: "Khanit",
@@ -213,6 +156,7 @@ class _stful_BodyState extends State<stful_Body> {
             ),
           ),
         )
+
       ],
     );
   }
@@ -237,7 +181,6 @@ class _stful_BodyState extends State<stful_Body> {
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                     fontFamily: "Khanit")),
-
             Container(
               margin: EdgeInsets.symmetric(vertical: 28, horizontal: 10),
               height: 300,
