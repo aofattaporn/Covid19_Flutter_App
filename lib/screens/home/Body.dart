@@ -18,7 +18,6 @@ class stful_Body extends StatefulWidget {
 }
 
 class _stful_BodyState extends State<stful_Body> {
-
   // constant variable
   Model model = new Model();
   bool isLoading = false;
@@ -111,7 +110,7 @@ class _stful_BodyState extends State<stful_Body> {
 
         // bottom sheet
         Expanded(
-          child:  Center(
+          child: Center(
             child: Container(
               decoration: BoxDecoration(
                   color: kPrimaryColor,
@@ -156,7 +155,6 @@ class _stful_BodyState extends State<stful_Body> {
             ),
           ),
         )
-
       ],
     );
   }
@@ -199,5 +197,4 @@ class _stful_BodyState extends State<stful_Body> {
           ],
         ),
       );
-
 }

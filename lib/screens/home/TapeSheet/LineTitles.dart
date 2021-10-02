@@ -3,18 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 class LineTitles {
-
   List timeline;
 
   LineTitles(this.timeline);
 
   String getDate(int x) {
     return timeline[x]["Date"].toString().substring(0, 5);
-
   }
 
-   getTitleData() => FlTitlesData(
-
+  getTitleData() => FlTitlesData(
       show: true,
       topTitles: SideTitles(
         showTitles: true,
@@ -43,15 +40,13 @@ class LineTitles {
       bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 20,
-          getTextStyles: (value) => const TextStyle(
-                color: Color(0xff000000),
-            fontSize: 12
-              ),
+          getTextStyles: (value) =>
+              const TextStyle(color: Color(0xff000000), fontSize: 12),
           getTitles: (value) {
             switch (value.toInt()) {
               case 8:
                 return getDate(0);
-              case 6: 
+              case 6:
                 return getDate(2);
               case 4:
                 return getDate(4);
@@ -81,6 +76,4 @@ class LineTitles {
         },
         reservedSize: 25,
       ));
-
-
 }

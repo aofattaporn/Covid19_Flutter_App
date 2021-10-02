@@ -15,7 +15,6 @@ class LineChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return LineChart(LineChartData(
         // set min max graft
         minX: 0,
@@ -25,7 +24,6 @@ class LineChartWidget extends StatelessWidget {
         titlesData: LineTitles(timeline).getTitleData(),
         gridData: FlGridData(
           show: true,
-
           getDrawingHorizontalLine: (value) {
             return FlLine(
               color: const Color(0xff37434d),

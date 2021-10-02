@@ -1,5 +1,4 @@
 class Model {
-
   String todayCase = "";
   String totalCases = "";
 
@@ -8,5 +7,4 @@ class Model {
 
   String todayRecovered = "";
   String totalRecovered = "";
-
 }

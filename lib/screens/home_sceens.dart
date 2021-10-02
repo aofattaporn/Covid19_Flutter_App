@@ -12,7 +12,6 @@ class Home_screens extends StatelessWidget {
       ),
 
       body: stful_Body(),
-
     );
   }
 }
